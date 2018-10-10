@@ -18,7 +18,7 @@ public class App {
         for (int i=0; i < maxNum; i++){
             new Thread(new Runnable() {
                 public void run() {
-                    // Ä£ÄâËæ»úÇëÇó
+                    // æ¨¡æ‹Ÿéšæœºè¯·æ±‚
                     try {
                         Thread.sleep(new Random().nextInt(20) * 1000);
                     } catch (InterruptedException e) {
@@ -26,33 +26,35 @@ public class App {
                     }
 
                     try{
-                        // ¹ıÈÛ¶ÏÆ÷
+                        // è¿‡ç†”æ–­å™¨
                         if (circuitBreaker.canPassCheck()){
                             // do something
-                            System.out.println("Õı³£ÒµÎñÂß¼­²Ù×÷");
+                            System.out.println("æ­£å¸¸ä¸šåŠ¡é€»è¾‘æ“ä½œ");
 
-                            // Ä£ÄâºóÆÚµÄ·şÎñ»Ö¸´×´Ì¬
+                            // æ¨¡æ‹ŸåæœŸçš„æœåŠ¡æ¢å¤çŠ¶æ€
                             if (countDownLatch.getCount() >= maxNum/2){
-                                // Ä£ÄâËæ»úÊ§°Ü
+                                // æ¨¡æ‹Ÿéšæœºå¤±è´¥
                                 if (new Random().nextInt(2) == 1){
                                     throw new Exception("mock error");
                                 }
                             }
                             countDownLatch.countDown();
                         } else {
-                            System.out.println("À¹½ØÒµÎñÂß¼­²Ù×÷");
+                            System.out.println("æ‹¦æˆªä¸šåŠ¡é€»è¾‘æ“ä½œ");
+                            //æ¨¡æ‹Ÿè‡ªæ—‹
                             Thread.sleep(500);
-                            
+                            //å¤±è´¥çš„çº¿ç¨‹åœ¨è‡ªæ—‹ä¹‹åé‡æ–°è·å–ä»»åŠ¡
+                            Thread.currentThread().run();
                         }
                     }catch (Exception e){
-                        System.out.println("ÒµÎñÖ´ĞĞÊ§°ÜÁË");
-                        // ÈÛ¶ÏÆ÷¼ÆÊıÆ÷
+                        System.out.println("ä¸šåŠ¡æ‰§è¡Œå¤±è´¥äº†");
+                        // ç†”æ–­å™¨è®¡æ•°å™¨
                         circuitBreaker.countFailNum();
                     }
                 }
             }).start();
 
-            // Ä£ÄâËæ»úÇëÇó
+            // æ¨¡æ‹Ÿéšæœºè¯·æ±‚
             try {
                 Thread.sleep(new Random().nextInt(5) * 100);
             } catch (InterruptedException e) {
